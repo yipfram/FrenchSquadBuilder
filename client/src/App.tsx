@@ -6,6 +6,8 @@ import { TeamProvider } from "./context/TeamContext";
 import TeamBuilder from "./pages/TeamBuilder";
 import TeamComparison from "./pages/TeamComparison";
 import NotFound from "@/pages/not-found";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function Router() {
   return (
@@ -20,10 +22,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TeamProvider>
-        <Router />
-        <Toaster />
-      </TeamProvider>
+      <DndProvider backend={HTML5Backend}>
+        <TeamProvider>
+          <Router />
+          <Toaster />
+        </TeamProvider>
+      </DndProvider>
     </QueryClientProvider>
   );
 }

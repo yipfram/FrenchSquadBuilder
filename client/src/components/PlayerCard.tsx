@@ -1,6 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTeam } from "@/context/TeamContext";
 import { Player } from "@shared/schema";
+import { useDrag, useDrop } from 'react-dnd';
+
+// Define custom types for drag and drop
+const PLAYER_DRAG_TYPE = 'player';
+
+interface DragItem {
+  type: string;
+  positionId: string;
+  playerId?: number;
+}
 
 interface PlayerCardProps {
   positionId: string;
@@ -9,12 +19,37 @@ interface PlayerCardProps {
 }
 
 export default function PlayerCard({ positionId, playerId, position }: PlayerCardProps) {
-  const { removePlayerFromPosition } = useTeam();
+  const { removePlayerFromPosition, movePlayerBetweenPositions } = useTeam();
   
   const { data: player, isLoading } = useQuery<Player>({
     queryKey: ['/api/players', playerId],
     enabled: !!playerId,
   });
+
+  // Set up drag functionality
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: PLAYER_DRAG_TYPE,
+    item: { type: PLAYER_DRAG_TYPE, positionId, playerId },
+    canDrag: !!playerId, // Only allow dragging if there's a player
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }), [positionId, playerId]);
+
+  // Set up drop functionality
+  const [{ isOver, canDrop }, drop] = useDrop(() => ({
+    accept: PLAYER_DRAG_TYPE,
+    drop: (item: DragItem) => {
+      if (item.positionId !== positionId) {
+        movePlayerBetweenPositions(item.positionId, positionId);
+      }
+    },
+    canDrop: (item: DragItem) => item.positionId !== positionId,
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
+    }),
+  }), [positionId, movePlayerBetweenPositions]);
 
   const handleRemovePlayer = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -23,9 +58,32 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
     }
   };
 
+  // Combine drag and drop refs
+  const dragDropRef = (ref: HTMLDivElement) => {
+    drag(ref);
+    drop(ref);
+  };
+
+  // Styles based on drag and drop states
+  const getCardStyle = () => {
+    if (isDragging) {
+      return "opacity-30";
+    }
+    if (isOver && canDrop) {
+      return "ring-4 ring-green-500";
+    }
+    if (canDrop) {
+      return "ring-2 ring-blue-300";
+    }
+    return "";
+  };
+
   if (!playerId) {
     return (
-      <div className="player-card empty bg-white bg-opacity-50 rounded-full w-14 h-14 flex items-center justify-center shadow-md border-2 border-gray-300 hover:bg-opacity-70">
+      <div 
+        ref={drop}
+        className={`player-card empty bg-white bg-opacity-50 rounded-full w-14 h-14 flex items-center justify-center shadow-md border-2 border-gray-300 hover:bg-opacity-70 ${isOver && canDrop ? "ring-4 ring-green-500" : ""}`}
+      >
         <div className="uppercase text-xs font-bold text-gray-700">{position}</div>
       </div>
     );
@@ -40,7 +98,10 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
   }
 
   return (
-    <div className="player-card relative bg-white rounded-full w-14 h-14 flex items-center justify-center shadow-md border-2 border-[#ED2939] overflow-hidden transition-all hover:scale-105">
+    <div 
+      ref={dragDropRef}
+      className={`player-card relative bg-white rounded-full w-14 h-14 flex items-center justify-center shadow-md border-2 border-[#ED2939] overflow-hidden transition-all hover:scale-105 cursor-move ${getCardStyle()}`}
+    >
       <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +119,7 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
       
       {/* Player name and rating label */}
       <div className="absolute -bottom-6 bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap z-10">
-        {player.name && (player.name.split(' ')[1] || player.name.split(' ')[0])} 
+        {player.name} 
         <span className="text-yellow-300 ml-1">{player.rating}</span>
       </div>
       

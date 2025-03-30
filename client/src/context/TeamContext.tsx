@@ -17,6 +17,7 @@ interface TeamContextType {
   playerPositions: PlayerPosition[];
   addPlayerToPosition: (positionId: string, playerId: number) => void;
   removePlayerFromPosition: (positionId: string) => void;
+  movePlayerBetweenPositions: (fromPositionId: string, toPositionId: string) => void;
   powerScore: number;
   autoFillTeam: () => void;
   resetTeam: () => void;
@@ -84,6 +85,30 @@ export function TeamProvider({ children }: { children: ReactNode }) {
       )
     );
   };
+  
+  // Move a player between positions
+  const movePlayerBetweenPositions = (fromPositionId: string, toPositionId: string) => {
+    setPlayerPositions(prevPositions => {
+      // Find the player in the from position
+      const fromPosition = prevPositions.find(pp => pp.positionId === fromPositionId);
+      if (!fromPosition || !fromPosition.playerId) return prevPositions;
+      
+      // Get the player ID
+      const playerId = fromPosition.playerId;
+      
+      // Create a new array with the player moved
+      return prevPositions.map(pp => {
+        if (pp.positionId === fromPositionId) {
+          // Remove player from original position
+          return { ...pp, playerId: undefined };
+        } else if (pp.positionId === toPositionId) {
+          // Add player to new position
+          return { ...pp, playerId };
+        }
+        return pp;
+      });
+    });
+  };
 
   // Auto-fill the team with the best available players
   const autoFillTeam = () => {
@@ -144,6 +169,7 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         playerPositions,
         addPlayerToPosition,
         removePlayerFromPosition,
+        movePlayerBetweenPositions,
         powerScore,
         autoFillTeam,
         resetTeam,
