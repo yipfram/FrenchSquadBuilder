@@ -19,11 +19,11 @@ export default function TeamBuilder() {
     <div className="min-h-screen bg-[#F4F4F4] text-[#333333] flex flex-col">
       {/* Header */}
       <header className="bg-[#002654] text-white shadow-md">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+        <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-[#ED2939]"
+              className="h-5 w-5 sm:h-6 sm:w-6 text-[#ED2939]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -35,17 +35,17 @@ export default function TeamBuilder() {
                 d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
               />
             </svg>
-            <h1 className="font-montserrat text-xl font-bold">French Team Builder</h1>
+            <h1 className="font-montserrat text-lg sm:text-xl font-bold">French Team Builder</h1>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <button
               onClick={() => setIsSaveModalOpen(true)}
-              className="bg-[#ED2939] hover:bg-opacity-90 px-4 py-2 rounded-md font-medium flex items-center"
+              className="bg-[#ED2939] hover:bg-opacity-90 px-2 sm:px-4 py-1 sm:py-2 rounded-md text-sm sm:text-base font-medium flex items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-2"
+                className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -55,15 +55,16 @@ export default function TeamBuilder() {
                   clipRule="evenodd"
                 />
               </svg>
-              Save Team
+              <span className="hidden sm:inline">Save Team</span>
+              <span className="sm:hidden">Save</span>
             </button>
             <button
               onClick={handleCompareTeams}
-              className="bg-white text-[#002654] hover:bg-opacity-90 px-4 py-2 rounded-md font-medium flex items-center"
+              className="bg-white text-[#002654] hover:bg-opacity-90 px-2 sm:px-4 py-1 sm:py-2 rounded-md text-sm sm:text-base font-medium flex items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-2"
+                className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -73,14 +74,15 @@ export default function TeamBuilder() {
                   clipRule="evenodd"
                 />
               </svg>
-              Compare Teams
+              <span className="hidden sm:inline">Compare Teams</span>
+              <span className="sm:hidden">Compare</span>
             </button>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 flex-grow">
-        <div className="flex flex-col lg:flex-row gap-6">
+      <main className="container mx-auto px-2 sm:px-4 py-3 sm:py-6 flex-grow">
+        <div className="flex flex-col lg:flex-row gap-3 sm:gap-6">
           <TeamInfoPanel />
           <SoccerFieldView formation={selectedFormation} />
           <PlayerSelectionPanel />

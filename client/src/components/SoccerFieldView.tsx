@@ -34,7 +34,7 @@ export default function SoccerFieldView({ formation }: SoccerFieldViewProps) {
         <h2 className="font-montserrat font-semibold text-lg border-b border-gray-200 pb-2 mb-3">Formation View</h2>
         
         <div 
-          className="soccer-field rounded-lg h-[500px] relative"
+          className="soccer-field rounded-lg h-[300px] sm:h-[400px] md:h-[500px] relative"
           style={{
             background: "radial-gradient(circle, #65a54e, #4a8d3a)",
             backgroundSize: "100% 100%",
