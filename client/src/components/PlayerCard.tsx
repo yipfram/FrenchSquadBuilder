@@ -58,7 +58,7 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
       
       {/* Player name and rating label */}
       <div className="absolute -bottom-6 bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap z-10">
-        {player.name.split(' ')[1] || player.name.split(' ')[0]} 
+        {player.name && (player.name.split(' ')[1] || player.name.split(' ')[0])} 
         <span className="text-yellow-300 ml-1">{player.rating}</span>
       </div>
       
