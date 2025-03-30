@@ -60,7 +60,8 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
     }
   };
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (player) {
       setShowDetails(!showDetails);
     }

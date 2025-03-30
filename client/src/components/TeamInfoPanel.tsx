@@ -31,14 +31,14 @@ export default function TeamInfoPanel() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/teams'] });
       toast({
-        title: "Team deleted",
-        description: "The team has been successfully deleted.",
+        title: "Équipe supprimée",
+        description: "L'équipe a été supprimée avec succès.",
       });
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: `Failed to delete team: ${error.message}`,
+        title: "Erreur",
+        description: `Échec de la suppression de l'équipe: ${error.message}`,
         variant: "destructive",
       });
     }
@@ -60,8 +60,8 @@ export default function TeamInfoPanel() {
       setSelectedFormation(formationData);
     }
     toast({
-      title: "Team loaded",
-      description: `${team.name} has been loaded into the builder.`,
+      title: "Équipe chargée",
+      description: `${team.name} a été chargée dans le créateur.`,
     });
   };
 
@@ -74,16 +74,16 @@ export default function TeamInfoPanel() {
     <div className="w-full lg:w-1/4 bg-white p-4 rounded-lg shadow-md">
       {/* Team Details Section */}
       <div className="mb-6">
-        <h2 className="font-montserrat font-semibold text-lg border-b border-gray-200 pb-2 mb-3">Team Setup</h2>
+        <h2 className="font-montserrat font-semibold text-lg border-b border-gray-200 pb-2 mb-3">Configuration d'Équipe</h2>
         
         <div className="mb-4">
-          <label htmlFor="team-name" className="block text-sm font-medium mb-1">Team Name</label>
+          <label htmlFor="team-name" className="block text-sm font-medium mb-1">Nom d'Équipe</label>
           <input 
             id="team-name" 
             type="text" 
             value={teamName}
             onChange={(e) => setTeamName(e.target.value)}
-            placeholder="My French XI" 
+            placeholder="Mon XI Français" 
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#002654]"
           />
         </div>
@@ -122,7 +122,7 @@ export default function TeamInfoPanel() {
         
         {/* Power Score */}
         <div className="bg-[#002654] text-white rounded-md p-3 flex items-center justify-between">
-          <span className="font-medium">Team Power</span>
+          <span className="font-medium">Puissance d'Équipe</span>
           <div className="flex items-center space-x-1">
             <span id="power-score" className="text-xl font-bold">{powerScore}</span>
             <span className="text-sm">/100</span>
@@ -132,7 +132,7 @@ export default function TeamInfoPanel() {
       
       {/* Saved Teams Section */}
       <div>
-        <h2 className="font-montserrat font-semibold text-lg border-b border-gray-200 pb-2 mb-3">Saved Teams</h2>
+        <h2 className="font-montserrat font-semibold text-lg border-b border-gray-200 pb-2 mb-3">Équipes Enregistrées</h2>
         
         {isLoading ? (
           <div className="flex justify-center py-4">
@@ -148,7 +148,7 @@ export default function TeamInfoPanel() {
               <div className="flex justify-between items-center">
                 <div>
                   <div className="font-medium">{team.name}</div>
-                  <div className="text-sm text-gray-600">{team.formation} • Power {team.powerScore}</div>
+                  <div className="text-sm text-gray-600">{team.formation} • Puissance {team.powerScore}</div>
                 </div>
                 <div className="flex space-x-2">
                   <button 
@@ -174,7 +174,7 @@ export default function TeamInfoPanel() {
           ))
         ) : (
           <div className="text-center py-4 text-gray-500">
-            No saved teams yet. Create and save your first team!
+            Aucune équipe enregistrée. Créez et enregistrez votre première équipe!
           </div>
         )}
       </div>

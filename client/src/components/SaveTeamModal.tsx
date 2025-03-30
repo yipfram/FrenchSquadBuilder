@@ -37,15 +37,15 @@ export default function SaveTeamModal({ isOpen, onClose }: SaveTeamModalProps) {
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['/api/teams'] });
       toast({
-        title: "Team saved",
-        description: "Your team has been successfully saved.",
+        title: "Équipe enregistrée",
+        description: "Votre équipe a été enregistrée avec succès.",
       });
       onClose();
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: `Failed to save team: ${error.message}`,
+        title: "Erreur",
+        description: `Échec de l'enregistrement de l'équipe: ${error.message}`,
         variant: "destructive",
       });
     }
@@ -54,8 +54,8 @@ export default function SaveTeamModal({ isOpen, onClose }: SaveTeamModalProps) {
   const handleSave = () => {
     if (!teamNameInput.trim()) {
       toast({
-        title: "Error",
-        description: "Please enter a team name.",
+        title: "Erreur",
+        description: "Veuillez entrer un nom d'équipe.",
         variant: "destructive",
       });
       return;
@@ -68,29 +68,29 @@ export default function SaveTeamModal({ isOpen, onClose }: SaveTeamModalProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="font-montserrat font-semibold text-xl">Save Team</DialogTitle>
+          <DialogTitle className="font-montserrat font-semibold text-xl">Enregistrer l'Équipe</DialogTitle>
         </DialogHeader>
         
         <div className="grid gap-4 py-4">
           <div>
-            <Label htmlFor="save-team-name" className="text-sm font-medium mb-1">Team Name</Label>
+            <Label htmlFor="save-team-name" className="text-sm font-medium mb-1">Nom d'Équipe</Label>
             <Input
               id="save-team-name"
               value={teamNameInput}
               onChange={(e) => setTeamNameInput(e.target.value)}
-              placeholder="My French XI"
+              placeholder="Mon XI Français"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#002654]"
             />
           </div>
           
           <div>
-            <Label htmlFor="save-team-notes" className="text-sm font-medium mb-1">Notes (Optional)</Label>
+            <Label htmlFor="save-team-notes" className="text-sm font-medium mb-1">Notes (Optionnel)</Label>
             <Textarea
               id="save-team-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
-              placeholder="Add notes about this team composition..."
+              placeholder="Ajoutez des notes sur cette composition d'équipe..."
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#002654]"
             />
           </div>
@@ -98,7 +98,7 @@ export default function SaveTeamModal({ isOpen, onClose }: SaveTeamModalProps) {
         
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
-            Cancel
+            Annuler
           </Button>
           <Button 
             onClick={handleSave}
@@ -108,10 +108,10 @@ export default function SaveTeamModal({ isOpen, onClose }: SaveTeamModalProps) {
             {saveTeamMutation.isPending ? (
               <>
                 <span className="animate-spin h-4 w-4 mr-2 border-2 border-white border-t-transparent rounded-full"></span>
-                Saving...
+                Enregistrement...
               </>
             ) : (
-              "Save Team"
+              "Enregistrer"
             )}
           </Button>
         </DialogFooter>

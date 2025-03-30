@@ -35,7 +35,7 @@ export default function TeamBuilder() {
                 d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
               />
             </svg>
-            <h1 className="font-montserrat text-lg sm:text-xl font-bold">French Team Builder</h1>
+            <h1 className="font-montserrat text-lg sm:text-xl font-bold">Créateur d'Équipe Française</h1>
           </div>
 
           <div className="flex items-center space-x-2 sm:space-x-4">
@@ -55,8 +55,8 @@ export default function TeamBuilder() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="hidden sm:inline">Save Team</span>
-              <span className="sm:hidden">Save</span>
+              <span className="hidden sm:inline">Enregistrer</span>
+              <span className="sm:hidden">Enreg.</span>
             </button>
             <button
               onClick={handleCompareTeams}
@@ -74,8 +74,8 @@ export default function TeamBuilder() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="hidden sm:inline">Compare Teams</span>
-              <span className="sm:hidden">Compare</span>
+              <span className="hidden sm:inline">Comparer</span>
+              <span className="sm:hidden">Comp.</span>
             </button>
           </div>
         </div>

@@ -28,7 +28,7 @@ interface TeamContextType {
 const TeamContext = createContext<TeamContextType | undefined>(undefined);
 
 export function TeamProvider({ children }: { children: ReactNode }) {
-  const [teamName, setTeamName] = useState("My French XI");
+  const [teamName, setTeamName] = useState("Mon XI Français");
   const [selectedFormation, setSelectedFormation] = useState<Formation | null>(formations[0]);
   const [playerPositions, setPlayerPositions] = useState<PlayerPosition[]>([]);
   const [powerScore, setPowerScore] = useState(0);
@@ -64,8 +64,38 @@ export function TeamProvider({ children }: { children: ReactNode }) {
     }
   }, [playerPositions, players]);
 
+  // Define position compatibility map
+  const positionCompatibilityMap: Record<string, string[]> = {
+    "GK": ["GK"],
+    "CB": ["CB", "LB", "RB"],
+    "LB": ["LB", "CB", "RB"],
+    "RB": ["RB", "CB", "LB"],
+    "CDM": ["CDM", "CM", "CAM"],
+    "CM": ["CM", "CDM", "CAM"],
+    "CAM": ["CAM", "CM", "CDM"],
+    "LW": ["LW", "RW", "ST"],
+    "RW": ["RW", "LW", "ST"],
+    "ST": ["ST", "LW", "RW"]
+  };
+
+  const isPositionCompatible = (playerPosition: string, targetPosition: string): boolean => {
+    return positionCompatibilityMap[playerPosition]?.includes(targetPosition) || false;
+  };
+
   // Add a player to a position
   const addPlayerToPosition = (positionId: string, playerId: number) => {
+    // Find the player and the target position
+    const player = players?.find(p => p.id === playerId);
+    const targetPosition = selectedFormation?.positions.find(pos => pos.id === positionId);
+    
+    if (!player || !targetPosition) return;
+    
+    // Check if the player can play in this position
+    if (!isPositionCompatible(player.position, targetPosition.position)) {
+      console.log("Position incompatible", player.position, targetPosition.position);
+      return; // Don't add player if position is incompatible
+    }
+
     setPlayerPositions(prevPositions => 
       prevPositions.map(pp => 
         pp.positionId === positionId 
@@ -88,6 +118,22 @@ export function TeamProvider({ children }: { children: ReactNode }) {
   
   // Move a player between positions
   const movePlayerBetweenPositions = (fromPositionId: string, toPositionId: string) => {
+    // Find the player and target positions
+    const player = players?.find(p => {
+      const position = playerPositions.find(pp => pp.positionId === fromPositionId);
+      return position && position.playerId === p.id;
+    });
+    
+    const targetPosition = selectedFormation?.positions.find(pos => pos.id === toPositionId);
+    
+    if (!player || !targetPosition) return;
+    
+    // Check if the player can play in the target position
+    if (!isPositionCompatible(player.position, targetPosition.position)) {
+      console.log("Position incompatible for move", player.position, targetPosition.position);
+      return; // Don't move player if position is incompatible
+    }
+    
     setPlayerPositions(prevPositions => {
       // Find the player in the from position
       const fromPosition = prevPositions.find(pp => pp.positionId === fromPositionId);
@@ -122,13 +168,14 @@ export function TeamProvider({ children }: { children: ReactNode }) {
     
     // Create new player positions array
     const newPositions = selectedFormation.positions.map(formationPos => {
-      // Get position type (GK, DEF, MID, FWD)
+      // Get position type
       const positionType = formationPos.position;
       
       // Find the best unassigned player for this position
       const bestPlayer = sortedPlayers.find(player => {
-        const positionMatches = positionType === player.position;
-        return positionMatches && !assignedPlayers.has(player.id);
+        // Check position compatibility
+        const positionIsCompatible = isPositionCompatible(player.position, positionType);
+        return positionIsCompatible && !assignedPlayers.has(player.id);
       });
       
       if (bestPlayer) {

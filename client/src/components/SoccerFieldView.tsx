@@ -15,23 +15,23 @@ export default function SoccerFieldView({ formation }: SoccerFieldViewProps) {
   const handleAutoFill = () => {
     autoFillTeam();
     toast({
-      title: "Team auto-filled",
-      description: "Team has been automatically filled with the best available players.",
+      title: "Équipe auto-complétée",
+      description: "L'équipe a été automatiquement remplie avec les meilleurs joueurs disponibles.",
     });
   };
 
   const handleReset = () => {
     resetTeam();
     toast({
-      title: "Team reset",
-      description: "All player selections have been cleared.",
+      title: "Équipe réinitialisée",
+      description: "Toutes les sélections de joueurs ont été effacées.",
     });
   };
 
   return (
     <div className="w-full lg:w-2/4">
       <div className="bg-white p-4 rounded-lg shadow-md">
-        <h2 className="font-montserrat font-semibold text-lg border-b border-gray-200 pb-2 mb-3">Formation View</h2>
+        <h2 className="font-montserrat font-semibold text-lg border-b border-gray-200 pb-2 mb-3">Vue de Formation</h2>
         
         <div 
           className="soccer-field rounded-lg h-[300px] sm:h-[400px] md:h-[500px] relative"
@@ -93,7 +93,7 @@ export default function SoccerFieldView({ formation }: SoccerFieldViewProps) {
                 clipRule="evenodd"
               />
             </svg>
-            Auto-Fill
+            Auto-Compléter
           </button>
           <button 
             onClick={handleReset}
@@ -111,7 +111,7 @@ export default function SoccerFieldView({ formation }: SoccerFieldViewProps) {
                 clipRule="evenodd"
               />
             </svg>
-            Reset
+            Réinitialiser
           </button>
         </div>
       </div>

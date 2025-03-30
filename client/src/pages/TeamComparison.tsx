@@ -21,7 +21,7 @@ export default function TeamComparison() {
       <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center">
         <div className="bg-white p-8 rounded-lg shadow-md text-center">
           <div className="animate-spin h-10 w-10 border-4 border-[#002654] border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-[#333333]">Loading team comparisons...</p>
+          <p className="text-[#333333]">Chargement des comparaisons d'équipe...</p>
         </div>
       </div>
     );
@@ -47,25 +47,25 @@ export default function TeamComparison() {
                 d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
               />
             </svg>
-            <h1 className="font-montserrat text-xl font-bold">French Team Builder</h1>
+            <h1 className="font-montserrat text-xl font-bold">Créateur d'Équipe Française</h1>
           </div>
         </div>
       </header>
 
       <main className="container mx-auto px-4 py-6 flex-grow">
         <div className="bg-white p-4 rounded-lg shadow-md">
-          <h2 className="font-montserrat font-semibold text-xl mb-4">Team Comparison</h2>
+          <h2 className="font-montserrat font-semibold text-xl mb-4">Comparaison d'Équipes</h2>
           
           <div className="flex flex-col lg:flex-row gap-4">
             {/* Current team */}
             {currentTeam && (
               <div className="comparison-team-card flex-1 border border-gray-200 rounded-lg overflow-hidden">
                 <div className="bg-[#002654] text-white p-3">
-                  <h3 className="font-montserrat font-semibold">Current Team</h3>
+                  <h3 className="font-montserrat font-semibold">Équipe Actuelle</h3>
                   <div className="flex justify-between items-center">
                     <span>{currentTeam.formation}</span>
                     <div className="flex items-center">
-                      <span className="mr-1">Power:</span>
+                      <span className="mr-1">Puissance:</span>
                       <span className="font-bold">{currentTeam.powerScore}</span>
                     </div>
                   </div>
@@ -101,7 +101,7 @@ export default function TeamComparison() {
                   <div className="flex justify-between items-center">
                     <span>{team.formation}</span>
                     <div className="flex items-center">
-                      <span className="mr-1">Power:</span>
+                      <span className="mr-1">Puissance:</span>
                       <span className="font-bold">{team.powerScore}</span>
                     </div>
                   </div>
@@ -147,7 +147,7 @@ export default function TeamComparison() {
                   clipRule="evenodd"
                 />
               </svg>
-              Return to Builder
+              Retourner au Créateur
             </button>
           </div>
         </div>

@@ -62,11 +62,11 @@ export default function PlayerSelectionPanel() {
   return (
     <div className="w-full lg:w-1/4 bg-white p-2 sm:p-3 md:p-4 rounded-lg shadow-md">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 gap-2 sm:gap-0">
-        <h2 className="font-montserrat font-semibold text-base md:text-lg">Player Selection</h2>
+        <h2 className="font-montserrat font-semibold text-base md:text-lg">Sélection des Joueurs</h2>
         <div className="relative w-full sm:w-auto">
           <input 
             type="text" 
-            placeholder="Search players..." 
+            placeholder="Rechercher des joueurs..." 
             value={searchQuery}
             onChange={handleSearchChange}
             className="w-full pl-8 pr-3 py-1 sm:py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#002654]"
@@ -94,13 +94,13 @@ export default function PlayerSelectionPanel() {
             onClick={() => handlePositionFilterChange(null)}
             className={`${!positionFilter ? 'bg-[#002654] text-white' : 'bg-gray-200 hover:bg-gray-300'} px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm whitespace-nowrap`}
           >
-            All
+            Tous
           </button>
           <button 
             onClick={() => handlePositionFilterChange("GK")}
             className={`${positionFilter === "GK" ? 'bg-[#002654] text-white' : 'bg-gray-200 hover:bg-gray-300'} px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm whitespace-nowrap`}
           >
-            GK
+            GB
           </button>
           <button 
             onClick={() => handlePositionFilterChange("DEF")}
@@ -112,13 +112,13 @@ export default function PlayerSelectionPanel() {
             onClick={() => handlePositionFilterChange("MID")}
             className={`${positionFilter === "MID" ? 'bg-[#002654] text-white' : 'bg-gray-200 hover:bg-gray-300'} px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm whitespace-nowrap`}
           >
-            MID
+            MIL
           </button>
           <button 
             onClick={() => handlePositionFilterChange("FWD")}
             className={`${positionFilter === "FWD" ? 'bg-[#002654] text-white' : 'bg-gray-200 hover:bg-gray-300'} px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm whitespace-nowrap`}
           >
-            FWD
+            ATT
           </button>
         </div>
       </div>
@@ -160,7 +160,7 @@ export default function PlayerSelectionPanel() {
           ))
         ) : (
           <div className="text-center py-4 sm:py-8 text-gray-500 text-sm">
-            No players found matching your criteria.
+            Aucun joueur ne correspond à vos critères.
           </div>
         )}
       </div>

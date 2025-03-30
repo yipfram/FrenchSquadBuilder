@@ -25,8 +25,8 @@ export const POSITION_WEIGHTS = {
 
 // Team stats categories
 export const TEAM_STATS = [
-  { name: "Attack", key: "attack" },
-  { name: "Midfield", key: "midfield" },
-  { name: "Defense", key: "defense" },
-  { name: "Chemistry", key: "chemistry" }
+  { name: "Attaque", key: "attack" },
+  { name: "Milieu", key: "midfield" },
+  { name: "Défense", key: "defense" },
+  { name: "Chimie", key: "chemistry" }
 ];
