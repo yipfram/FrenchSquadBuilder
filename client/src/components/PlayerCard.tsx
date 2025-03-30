@@ -155,11 +155,16 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
         </button>
       </div>
       
-      {/* Player name - only shown when clicked */}
+      {/* Player name - always visible */}
+      <div className="absolute z-30 -bottom-6 left-1/2 transform -translate-x-1/2 bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap">
+        {player.name}
+      </div>
+      
+      {/* Extended details on click */}
       {showDetails && (
-        <div className="absolute z-30 -bottom-6 left-1/2 transform -translate-x-1/2 bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap">
-          {player.name}
-          <div className="text-[10px] opacity-80">{player.club}</div>
+        <div className="absolute z-30 -bottom-14 left-1/2 transform -translate-x-1/2 bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap">
+          <div className="font-bold">{player.name}</div>
+          <div className="text-[10px] opacity-80">{player.position} • {player.club}</div>
         </div>
       )}
     </div>
