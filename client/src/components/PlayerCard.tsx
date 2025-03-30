@@ -23,8 +23,17 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
   const [showDetails, setShowDetails] = useState(false);
   const { removePlayerFromPosition, movePlayerBetweenPositions } = useTeam();
   
+  // Récupération des données du joueur individuellement
   const { data: player, isLoading } = useQuery<Player>({
-    queryKey: ['/api/players', playerId],
+    queryKey: ['/api/players', playerId?.toString()],
+    queryFn: async ({ queryKey }) => {
+      if (!queryKey[1]) return null;
+      const response = await fetch(`/api/players/${queryKey[1]}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch player');
+      }
+      return response.json();
+    },
     enabled: !!playerId,
   });
 
