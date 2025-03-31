@@ -5,10 +5,11 @@ import TeamInfoPanel from "@/components/TeamInfoPanel";
 import SoccerFieldView from "@/components/SoccerFieldView";
 import PlayerSelectionPanel from "@/components/PlayerSelectionPanel";
 import SaveTeamModal from "@/components/SaveTeamModal";
+import FixedPowerScore from "@/components/FixedPowerScore";
 
 export default function TeamBuilder() {
   const [, setLocation] = useLocation();
-  const { selectedFormation } = useTeam();
+  const { selectedFormation, powerScore } = useTeam();
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
 
   const handleCompareTeams = () => {
@@ -96,6 +97,9 @@ export default function TeamBuilder() {
         isOpen={isSaveModalOpen} 
         onClose={() => setIsSaveModalOpen(false)} 
       />
+      
+      {/* Composant de puissance fixe qui apparaît lors du défilement */}
+      <FixedPowerScore powerScore={powerScore} />
     </div>
   );
 }

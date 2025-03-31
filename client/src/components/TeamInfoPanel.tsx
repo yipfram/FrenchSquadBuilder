@@ -8,6 +8,7 @@ import { formations } from "@/lib/formations";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import TeamStrategyRecommendation from "./TeamStrategyRecommendation";
+import FixedPowerScore from "./FixedPowerScore";
 import {
   Collapsible,
   CollapsibleContent,
@@ -169,12 +170,12 @@ export default function TeamInfoPanel() {
               />
             </svg>
           </CollapsibleTrigger>
-          <CollapsibleContent>
+          <CollapsibleContent className="stats-section">
             {/* Power Score */}
-            <div className="bg-[#002654] text-white rounded-md p-3 mb-4 flex items-center justify-between">
+            <div id="power-score" className="bg-[#002654] text-white rounded-md p-3 mb-4 flex items-center justify-between">
               <span className="font-medium">Puissance d'Équipe</span>
               <div className="flex items-center space-x-1">
-                <span id="power-score" className="text-xl font-bold">{powerScore}</span>
+                <span id="power-score-value" className="text-xl font-bold">{powerScore}</span>
                 <span className="text-sm">/100</span>
               </div>
             </div>
