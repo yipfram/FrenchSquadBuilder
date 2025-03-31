@@ -4,6 +4,20 @@ import { useTeam } from "@/context/TeamContext";
 import { Player } from "@shared/schema";
 import { useDrag, useDrop } from 'react-dnd';
 
+// French position name translation
+const positionTranslation: Record<string, string> = {
+  "GK": "Gardien",
+  "LB": "Latéral Gauche",
+  "CB": "Défenseur Central",
+  "RB": "Latéral Droit",
+  "CDM": "Milieu Défensif",
+  "CM": "Milieu Central",
+  "CAM": "Milieu Offensif",
+  "LW": "Ailier Gauche",
+  "RW": "Ailier Droit",
+  "ST": "Attaquant"
+};
+
 // Define custom types for drag and drop
 const PLAYER_DRAG_TYPE = 'player';
 
@@ -118,12 +132,21 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
   };
 
   if (!playerId) {
+    // Convert English position abbreviations to French for empty slots
+    const getFrenchPosition = (pos: string) => {
+      if (pos === "GK") return "GB";
+      if (pos === "LB" || pos === "CB" || pos === "RB") return "DEF";
+      if (pos === "CDM" || pos === "CM" || pos === "CAM") return "MIL";
+      if (pos === "LW" || pos === "RW" || pos === "ST") return "ATT";
+      return pos;
+    };
+    
     return (
       <div 
         ref={drop}
         className={`player-card empty bg-white bg-opacity-50 rounded-full w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 flex items-center justify-center shadow-md border-2 border-gray-300 hover:bg-opacity-70 ${isOver && canDrop ? "ring-4 ring-green-500" : ""}`}
       >
-        <div className="uppercase text-xs font-bold text-gray-700">{position}</div>
+        <div className="uppercase text-xs font-bold text-gray-700">{getFrenchPosition(position)}</div>
       </div>
     );
   }
@@ -172,7 +195,7 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
           <div>
             <div className="font-bold">{player.name}</div>
             <div className="text-[10px] opacity-80">
-              {player.position} • {player.club} • {player.rating}★
+              {positionTranslation[player.position]} • {player.club} • {player.rating}★
             </div>
           </div>
           

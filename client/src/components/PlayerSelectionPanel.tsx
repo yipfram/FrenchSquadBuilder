@@ -13,9 +13,40 @@ export default function PlayerSelectionPanel() {
     queryKey: ['/api/players'],
   });
 
+  // Define French position categories mapping
+  const positionMap: Record<string, string> = {
+    "GK": "GB",    // Gardien de But
+    "LB": "DEF",   // Défenseur
+    "CB": "DEF",   // Défenseur
+    "RB": "DEF",   // Défenseur
+    "CDM": "MIL",  // Milieu
+    "CM": "MIL",   // Milieu
+    "CAM": "MIL",  // Milieu
+    "LW": "ATT",   // Attaquant
+    "RW": "ATT",   // Attaquant
+    "ST": "ATT"    // Attaquant
+  };
+  
+  // French position name translation
+  const positionTranslation: Record<string, string> = {
+    "GK": "Gardien",
+    "LB": "Latéral Gauche",
+    "CB": "Défenseur Central",
+    "RB": "Latéral Droit",
+    "CDM": "Milieu Défensif",
+    "CM": "Milieu Central",
+    "CAM": "Milieu Offensif",
+    "LW": "Ailier Gauche",
+    "RW": "Ailier Droit",
+    "ST": "Attaquant"
+  };
+
   // Filter players by position and search query
   const filteredPlayers = players?.filter(player => {
-    const matchesPosition = positionFilter ? player.position === positionFilter : true;
+    // Match position by category (GB, DEF, MIL, ATT)
+    const matchesPosition = positionFilter ? 
+      (positionFilter === "GB" ? player.position === "GK" : positionMap[player.position] === positionFilter) : 
+      true;
     const matchesSearch = player.name.toLowerCase().includes(searchQuery.toLowerCase());
     
     // Check if player is already assigned
@@ -23,19 +54,6 @@ export default function PlayerSelectionPanel() {
     
     return matchesPosition && matchesSearch && !isAlreadyAssigned;
   });
-
-  const positionMap: Record<string, string> = {
-    "GK": "GK",
-    "LB": "DEF",
-    "CB": "DEF",
-    "RB": "DEF",
-    "CDM": "MID",
-    "CM": "MID",
-    "CAM": "MID",
-    "LW": "FWD",
-    "RW": "FWD",
-    "ST": "FWD"
-  };
 
   const handlePositionFilterChange = (position: string | null) => {
     setPositionFilter(position);
@@ -97,8 +115,8 @@ export default function PlayerSelectionPanel() {
             Tous
           </button>
           <button 
-            onClick={() => handlePositionFilterChange("GK")}
-            className={`${positionFilter === "GK" ? 'bg-[#002654] text-white' : 'bg-gray-200 hover:bg-gray-300'} px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm whitespace-nowrap`}
+            onClick={() => handlePositionFilterChange("GB")}
+            className={`${positionFilter === "GB" ? 'bg-[#002654] text-white' : 'bg-gray-200 hover:bg-gray-300'} px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm whitespace-nowrap`}
           >
             GB
           </button>
@@ -109,14 +127,14 @@ export default function PlayerSelectionPanel() {
             DEF
           </button>
           <button 
-            onClick={() => handlePositionFilterChange("MID")}
-            className={`${positionFilter === "MID" ? 'bg-[#002654] text-white' : 'bg-gray-200 hover:bg-gray-300'} px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm whitespace-nowrap`}
+            onClick={() => handlePositionFilterChange("MIL")}
+            className={`${positionFilter === "MIL" ? 'bg-[#002654] text-white' : 'bg-gray-200 hover:bg-gray-300'} px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm whitespace-nowrap`}
           >
             MIL
           </button>
           <button 
-            onClick={() => handlePositionFilterChange("FWD")}
-            className={`${positionFilter === "FWD" ? 'bg-[#002654] text-white' : 'bg-gray-200 hover:bg-gray-300'} px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm whitespace-nowrap`}
+            onClick={() => handlePositionFilterChange("ATT")}
+            className={`${positionFilter === "ATT" ? 'bg-[#002654] text-white' : 'bg-gray-200 hover:bg-gray-300'} px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm whitespace-nowrap`}
           >
             ATT
           </button>
@@ -151,7 +169,7 @@ export default function PlayerSelectionPanel() {
               </div>
               <div className="flex-grow min-w-0">
                 <div className="font-medium text-sm sm:text-base truncate">{player.name}</div>
-                <div className="text-[10px] sm:text-xs text-gray-600 truncate">{player.position} • {player.club}</div>
+                <div className="text-[10px] sm:text-xs text-gray-600 truncate">{positionTranslation[player.position]} • {player.club}</div>
               </div>
               <div className="text-xs sm:text-sm font-bold bg-[#002654] text-white w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center flex-shrink-0 ml-1">
                 {player.rating}
