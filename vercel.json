@@ -6,8 +6,11 @@
       "use": "@vercel/node"
     },
     {
-      "src": "client/**",
-      "use": "@vercel/static"
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
     }
   ],
   "routes": [
@@ -16,8 +19,18 @@
       "dest": "server/index.ts"
     },
     {
+      "src": "^/assets/(.*)",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" },
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "^/(.*)\\.(js|css|ico|json|png|jpg|jpeg|svg|webp)$",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" },
+      "dest": "/$1.$2"
+    },
+    {
       "src": "/(.*)",
-      "dest": "client/$1"
+      "dest": "/index.html"
     }
   ]
 } 
