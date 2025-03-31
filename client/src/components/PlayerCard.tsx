@@ -38,6 +38,7 @@ interface PlayerCardProps {
 
 export default function PlayerCard({ positionId, playerId, position }: PlayerCardProps) {
   const [showDetails, setShowDetails] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState<'center' | 'left' | 'right'>('center');
   const { removePlayerFromPosition, movePlayerBetweenPositions } = useTeam();
   
   // Récupération des données du joueur individuellement
@@ -118,6 +119,25 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
       if (showDetails) {
         setShowDetails(false);
         return;
+      }
+      
+      // Déterminer la position du tooltip par rapport à l'écran
+      const target = e.currentTarget as HTMLElement;
+      const rect = target.getBoundingClientRect();
+      const windowWidth = window.innerWidth;
+      const position = rect.left;
+      
+      // Si le joueur est proche du bord gauche
+      if (position < 100) {
+        setTooltipPosition('left');
+      } 
+      // Si le joueur est proche du bord droit
+      else if (position > windowWidth - 100) {
+        setTooltipPosition('right');
+      } 
+      // Sinon, centré (par défaut)
+      else {
+        setTooltipPosition('center');
       }
       
       // Diffuser l'événement pour masquer les noms des autres joueurs
@@ -210,7 +230,11 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
       {/* Player details on click with remove button */}
       {showDetails && (
         <div 
-          className="absolute z-30 -bottom-12 left-1/2 transform -translate-x-1/2 bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap shadow-md flex items-center gap-2"
+          className={`absolute z-30 -bottom-12 
+            ${tooltipPosition === 'center' ? 'left-1/2 transform -translate-x-1/2' : 
+             tooltipPosition === 'left' ? 'left-0' : 
+             'right-0'} 
+            bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap shadow-md flex items-center gap-2`}
           onClick={(e) => e.stopPropagation()} // Empêcher la propagation du clic
         >
           <div>
