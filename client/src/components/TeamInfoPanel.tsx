@@ -7,6 +7,11 @@ import { queryClient } from "@/lib/queryClient";
 import { formations } from "@/lib/formations";
 import { useToast } from "@/hooks/use-toast";
 import TeamStrategyRecommendation from "./TeamStrategyRecommendation";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 export default function TeamInfoPanel() {
   const { toast } = useToast();
@@ -71,6 +76,9 @@ export default function TeamInfoPanel() {
     deleteTeamMutation.mutate(teamId);
   };
 
+  const [isTeamStatsOpen, setIsTeamStatsOpen] = useState(true);
+  const [isSavedTeamsOpen, setIsSavedTeamsOpen] = useState(true);
+
   return (
     <div className="w-full lg:w-1/4 bg-white p-4 rounded-lg shadow-md">
       {/* Team Details Section */}
@@ -121,67 +129,105 @@ export default function TeamInfoPanel() {
           </div>
         </div>
         
-        {/* Power Score */}
-        <div className="bg-[#002654] text-white rounded-md p-3 mb-4 flex items-center justify-between">
-          <span className="font-medium">Puissance d'Équipe</span>
-          <div className="flex items-center space-x-1">
-            <span id="power-score" className="text-xl font-bold">{powerScore}</span>
-            <span className="text-sm">/100</span>
-          </div>
-        </div>
-        
-        {/* Recommendation de stratégie */}
-        <TeamStrategyRecommendation />
+        {/* Section puissance et stratégie */}
+        <Collapsible open={isTeamStatsOpen} onOpenChange={setIsTeamStatsOpen} className="mb-4">
+          <CollapsibleTrigger className="flex w-full items-center justify-between mb-2 p-2 bg-gray-100 hover:bg-gray-200 rounded-md text-left">
+            <span className="font-medium">Statistiques & Stratégie</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`h-5 w-5 transition-transform ${isTeamStatsOpen ? "transform rotate-180" : ""}`}
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            {/* Power Score */}
+            <div className="bg-[#002654] text-white rounded-md p-3 mb-4 flex items-center justify-between">
+              <span className="font-medium">Puissance d'Équipe</span>
+              <div className="flex items-center space-x-1">
+                <span id="power-score" className="text-xl font-bold">{powerScore}</span>
+                <span className="text-sm">/100</span>
+              </div>
+            </div>
+            
+            {/* Recommendation de stratégie */}
+            <TeamStrategyRecommendation />
+          </CollapsibleContent>
+        </Collapsible>
       </div>
       
       {/* Saved Teams Section */}
-      <div>
-        <h2 className="font-montserrat font-semibold text-lg border-b border-gray-200 pb-2 mb-3">Équipes Enregistrées</h2>
-        
-        {isLoading ? (
-          <div className="flex justify-center py-4">
-            <div className="animate-spin h-6 w-6 border-2 border-[#002654] border-t-transparent rounded-full"></div>
-          </div>
-        ) : savedTeams && savedTeams.length > 0 ? (
-          savedTeams.map((team) => (
-            <div 
-              key={team.id}
-              onClick={() => handleLoadTeam(team)}
-              className="saved-team-item p-3 bg-[#F4F4F4] rounded-md mb-2 cursor-pointer hover:bg-gray-200"
+      <Collapsible open={isSavedTeamsOpen} onOpenChange={setIsSavedTeamsOpen}>
+        <div className="border-b border-gray-200 pb-2 mb-3 flex items-center justify-between">
+          <h2 className="font-montserrat font-semibold text-lg">Équipes Enregistrées</h2>
+          <CollapsibleTrigger>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`h-5 w-5 transition-transform ${isSavedTeamsOpen ? "transform rotate-180" : ""}`}
+              viewBox="0 0 20 20"
+              fill="currentColor"
             >
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className="font-medium">{team.name}</div>
-                  <div className="text-sm text-gray-600">{team.formation} • Puissance {team.powerScore}</div>
-                </div>
-                <div className="flex space-x-2">
-                  <button 
-                    onClick={(e) => handleDeleteTeam(team.id, e)}
-                    className="text-[#ED2939] hover:text-opacity-80"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
+              <path
+                fillRule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </CollapsibleTrigger>
+        </div>
+        
+        <CollapsibleContent>
+          {isLoading ? (
+            <div className="flex justify-center py-4">
+              <div className="animate-spin h-6 w-6 border-2 border-[#002654] border-t-transparent rounded-full"></div>
+            </div>
+          ) : savedTeams && savedTeams.length > 0 ? (
+            savedTeams.map((team) => (
+              <div 
+                key={team.id}
+                onClick={() => handleLoadTeam(team)}
+                className="saved-team-item p-3 bg-[#F4F4F4] rounded-md mb-2 cursor-pointer hover:bg-gray-200"
+              >
+                <div className="flex justify-between items-center">
+                  <div>
+                    <div className="font-medium">{team.name}</div>
+                    <div className="text-sm text-gray-600">{team.formation} • Puissance {team.powerScore}</div>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button 
+                      onClick={(e) => handleDeleteTeam(team.id, e)}
+                      className="text-[#ED2939] hover:text-opacity-80"
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="text-center py-4 text-gray-500">
+              Aucune équipe enregistrée. Créez et enregistrez votre première équipe!
             </div>
-          ))
-        ) : (
-          <div className="text-center py-4 text-gray-500">
-            Aucune équipe enregistrée. Créez et enregistrez votre première équipe!
-          </div>
-        )}
-      </div>
+          )}
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   );
 }

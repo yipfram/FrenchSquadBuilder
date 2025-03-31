@@ -50,8 +50,7 @@ export default function TeamStrategyRecommendation() {
   // Si pas assez de joueurs, afficher un message
   if (players.length < 7) {
     return (
-      <div className="bg-white p-4 rounded-md shadow-md">
-        <h3 className="text-lg font-bold text-[#002654] mb-2">Recommandation de Stratégie</h3>
+      <div className="rounded-md">
         <div className="text-gray-500 text-sm">
           Placez au moins 7 joueurs sur le terrain pour obtenir des recommandations de stratégie.
         </div>
@@ -60,44 +59,40 @@ export default function TeamStrategyRecommendation() {
   }
 
   return (
-    <div className="bg-white p-4 rounded-md shadow-md">
-      <h3 className="text-lg font-bold text-[#002654] mb-3">Recommandation de Stratégie</h3>
-      
-      <div className="space-y-4">
-        {strategies.slice(0, 3).map((strategy) => (
-          <div 
-            key={strategy.type}
-            className={`border rounded-md p-3 cursor-pointer transition-all ${
-              selectedStrategy === strategy.type 
-                ? "border-[#ED2939] bg-red-50" 
-                : "border-gray-200 hover:border-gray-300"
-            }`}
-            onClick={() => setSelectedStrategy(strategy.type)}
-          >
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">{strategy.icon}</span>
-                <span className="font-bold">{strategy.name}</span>
-              </div>
-              <Badge 
-                variant={getVariantByScore(strategy.compatibilityScore) as "default" | "outline" | "secondary" | "destructive"}
-                className="ml-auto"
-              >
-                {strategy.compatibilityScore}%
-              </Badge>
+    <div className="space-y-4">
+      {strategies.slice(0, 3).map((strategy) => (
+        <div 
+          key={strategy.type}
+          className={`border rounded-md p-3 cursor-pointer transition-all ${
+            selectedStrategy === strategy.type 
+              ? "border-[#ED2939] bg-red-50" 
+              : "border-gray-200 hover:border-gray-300"
+          }`}
+          onClick={() => setSelectedStrategy(strategy.type)}
+        >
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">{strategy.icon}</span>
+              <span className="font-bold">{strategy.name}</span>
             </div>
-            
-            <div className="h-1.5 my-2 w-full bg-gray-200 rounded-full overflow-hidden">
-              <div 
-                className={`h-full ${getProgressColorByScore(strategy.compatibilityScore)}`}
-                style={{ width: `${strategy.compatibilityScore}%` }}
-              ></div>
-            </div>
-            
-            <p className="text-sm text-gray-600">{strategy.description}</p>
+            <Badge 
+              variant={getVariantByScore(strategy.compatibilityScore) as "default" | "outline" | "secondary" | "destructive"}
+              className="ml-auto"
+            >
+              {strategy.compatibilityScore}%
+            </Badge>
           </div>
-        ))}
-      </div>
+          
+          <div className="h-1.5 my-2 w-full bg-gray-200 rounded-full overflow-hidden">
+            <div 
+              className={`h-full ${getProgressColorByScore(strategy.compatibilityScore)}`}
+              style={{ width: `${strategy.compatibilityScore}%` }}
+            ></div>
+          </div>
+          
+          <p className="text-sm text-gray-600">{strategy.description}</p>
+        </div>
+      ))}
     </div>
   );
 }
