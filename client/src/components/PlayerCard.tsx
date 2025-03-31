@@ -237,7 +237,7 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
           className={`absolute z-30 -bottom-12 
             ${tooltipPosition === 'center' ? 'left-1/2 transform -translate-x-1/2' : 
              tooltipPosition === 'left' ? 'left-0' : 
-             'right-0 transform -translate-x-[90%]'} 
+             'right-0'} 
             bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap shadow-md flex items-center gap-2`}
           onClick={(e) => e.stopPropagation()} // Empêcher la propagation du clic
         >
