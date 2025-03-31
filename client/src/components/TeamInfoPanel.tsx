@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useTeam } from "@/context/TeamContext";
 import { Team } from "@shared/schema";
@@ -6,6 +6,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
 import { formations } from "@/lib/formations";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 import TeamStrategyRecommendation from "./TeamStrategyRecommendation";
 import {
   Collapsible,
@@ -76,8 +77,10 @@ export default function TeamInfoPanel() {
     deleteTeamMutation.mutate(teamId);
   };
 
-  const [isTeamStatsOpen, setIsTeamStatsOpen] = useState(true);
-  const [isSavedTeamsOpen, setIsSavedTeamsOpen] = useState(true);
+  const isMobile = useIsMobile();
+  const [isTeamNameOpen, setIsTeamNameOpen] = useState(!isMobile);
+  const [isTeamStatsOpen, setIsTeamStatsOpen] = useState(!isMobile);
+  const [isSavedTeamsOpen, setIsSavedTeamsOpen] = useState(!isMobile);
 
   return (
     <div className="w-full lg:w-1/4 bg-white p-4 rounded-lg shadow-md">
@@ -85,18 +88,38 @@ export default function TeamInfoPanel() {
       <div className="mb-6">
         <h2 className="font-montserrat font-semibold text-lg border-b border-gray-200 pb-2 mb-3">Configuration d'Équipe</h2>
         
-        <div className="mb-4">
-          <label htmlFor="team-name" className="block text-sm font-medium mb-1">Nom d'Équipe</label>
-          <input 
-            id="team-name" 
-            type="text" 
-            value={teamName}
-            onChange={(e) => setTeamName(e.target.value)}
-            placeholder="Mon XI Français" 
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#002654]"
-          />
-        </div>
+        {/* Nom d'équipe repliable */}
+        <Collapsible open={isTeamNameOpen} onOpenChange={setIsTeamNameOpen} className="mb-4">
+          <CollapsibleTrigger className="flex w-full items-center justify-between mb-2 p-2 bg-gray-100 hover:bg-gray-200 rounded-md text-left">
+            <span className="font-medium">Nom d'Équipe</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`h-5 w-5 transition-transform ${isTeamNameOpen ? "transform rotate-180" : ""}`}
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <div className="pt-2">
+              <input 
+                id="team-name" 
+                type="text" 
+                value={teamName}
+                onChange={(e) => setTeamName(e.target.value)}
+                placeholder="Mon XI Français" 
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#002654]"
+              />
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
         
+        {/* Formation (toujours visible) */}
         <div className="mb-4">
           <label htmlFor="formation-select" className="block text-sm font-medium mb-1">Formation</label>
           <div className="relative">

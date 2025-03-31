@@ -35,7 +35,10 @@ export default function TeamBuilder() {
                 d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
               />
             </svg>
-            <h1 className="font-montserrat text-lg sm:text-xl font-bold">Créateur d'Équipe Française</h1>
+            <div className="flex flex-col">
+              <span className="text-xs sm:text-sm text-gray-300 font-medium">SPORTERRE</span>
+              <h1 className="font-montserrat text-lg sm:text-xl font-bold leading-tight">Créateur d'Équipe Française</h1>
+            </div>
           </div>
 
           <div className="flex items-center space-x-2 sm:space-x-4">
