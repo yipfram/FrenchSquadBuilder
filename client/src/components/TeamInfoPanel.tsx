@@ -6,6 +6,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
 import { formations } from "@/lib/formations";
 import { useToast } from "@/hooks/use-toast";
+import TeamStrategyRecommendation from "./TeamStrategyRecommendation";
 
 export default function TeamInfoPanel() {
   const { toast } = useToast();
@@ -121,13 +122,16 @@ export default function TeamInfoPanel() {
         </div>
         
         {/* Power Score */}
-        <div className="bg-[#002654] text-white rounded-md p-3 flex items-center justify-between">
+        <div className="bg-[#002654] text-white rounded-md p-3 mb-4 flex items-center justify-between">
           <span className="font-medium">Puissance d'Équipe</span>
           <div className="flex items-center space-x-1">
             <span id="power-score" className="text-xl font-bold">{powerScore}</span>
             <span className="text-sm">/100</span>
           </div>
         </div>
+        
+        {/* Recommendation de stratégie */}
+        <TeamStrategyRecommendation />
       </div>
       
       {/* Saved Teams Section */}
