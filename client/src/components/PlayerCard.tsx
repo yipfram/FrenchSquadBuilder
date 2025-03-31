@@ -114,6 +114,12 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (player) {
+      // Si les détails sont déjà affichés pour ce joueur, les cacher
+      if (showDetails) {
+        setShowDetails(false);
+        return;
+      }
+      
       // Diffuser l'événement pour masquer les noms des autres joueurs
       document.dispatchEvent(playerNameVisibilityEvent);
       // Puis afficher ce nom après un court délai
