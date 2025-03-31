@@ -4,6 +4,10 @@ import { useTeam } from "@/context/TeamContext";
 import { Player } from "@shared/schema";
 import { useDrag, useDrop } from 'react-dnd';
 
+// Constantes pour la détection des bords de l'écran
+const LEFT_SCREEN_THRESHOLD = 100; // Pixels à partir du bord gauche
+const RIGHT_SCREEN_THRESHOLD = 150; // Pixels à partir du bord droit
+
 // French position name translation
 const positionTranslation: Record<string, string> = {
   "GK": "Gardien",
@@ -128,11 +132,11 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
       const position = rect.left;
       
       // Si le joueur est proche du bord gauche
-      if (position < 100) {
+      if (position < LEFT_SCREEN_THRESHOLD) {
         setTooltipPosition('left');
       } 
       // Si le joueur est proche du bord droit
-      else if (position > windowWidth - 100) {
+      else if (position > windowWidth - RIGHT_SCREEN_THRESHOLD) {
         setTooltipPosition('right');
       } 
       // Sinon, centré (par défaut)
@@ -233,7 +237,7 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
           className={`absolute z-30 -bottom-12 
             ${tooltipPosition === 'center' ? 'left-1/2 transform -translate-x-1/2' : 
              tooltipPosition === 'left' ? 'left-0' : 
-             'right-0'} 
+             'right-0 transform -translate-x-[90%]'} 
             bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap shadow-md flex items-center gap-2`}
           onClick={(e) => e.stopPropagation()} // Empêcher la propagation du clic
         >
