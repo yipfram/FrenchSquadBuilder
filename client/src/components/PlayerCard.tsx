@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTeam } from "@/context/TeamContext";
 import { Player } from "@shared/schema";
@@ -6,6 +6,9 @@ import { useDrag, useDrop } from 'react-dnd';
 
 // Define custom types for drag and drop
 const PLAYER_DRAG_TYPE = 'player';
+
+// Pour gérer l'affichage d'un seul nom à la fois
+const playerNameVisibilityEvent = new Event('playerNameVisibility');
 
 interface DragItem {
   type: string;
@@ -36,6 +39,19 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
     },
     enabled: !!playerId,
   });
+  
+  // Écouter l'événement pour cacher le nom si un autre joueur est cliqué
+  useEffect(() => {
+    const hideOtherNames = () => {
+      setShowDetails(false);
+    };
+    
+    document.addEventListener('playerNameVisibility', hideOtherNames);
+    
+    return () => {
+      document.removeEventListener('playerNameVisibility', hideOtherNames);
+    };
+  }, []);
 
   // Set up drag functionality
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -72,7 +88,12 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (player) {
-      setShowDetails(!showDetails);
+      // Diffuser l'événement pour masquer les noms des autres joueurs
+      document.dispatchEvent(playerNameVisibilityEvent);
+      // Puis afficher ce nom après un court délai
+      setTimeout(() => {
+        setShowDetails(true);
+      }, 10);
     }
   };
 
@@ -164,14 +185,9 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
         </button>
       </div>
       
-      {/* Player name - always visible */}
-      <div className="absolute z-30 -bottom-6 left-1/2 transform -translate-x-1/2 bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap">
-        {player.name}
-      </div>
-      
-      {/* Extended details on click */}
+      {/* Player details on click */}
       {showDetails && (
-        <div className="absolute z-30 -bottom-14 left-1/2 transform -translate-x-1/2 bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap">
+        <div className="absolute z-30 -bottom-12 left-1/2 transform -translate-x-1/2 bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap shadow-md">
           <div className="font-bold">{player.name}</div>
           <div className="text-[10px] opacity-80">{player.position} • {player.club}</div>
         </div>
