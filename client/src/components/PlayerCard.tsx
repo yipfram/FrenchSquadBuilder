@@ -158,38 +158,43 @@ export default function PlayerCard({ positionId, playerId, position }: PlayerCar
           </svg>
         </div>
         
-        {/* Rating indicator */}
+        {/* Player number */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xs sm:text-sm font-bold bg-[#002654] text-yellow-300 rounded-full h-5 w-5 sm:h-6 sm:w-6 flex items-center justify-center">
-            {player.rating}
+          <span className="text-xs sm:text-sm font-bold bg-[#002654] text-white rounded-full h-5 w-5 sm:h-6 sm:w-6 flex items-center justify-center">
+            {player.id}
           </span>
         </div>
-        
-        {/* Remove player button */}
-        <button 
-          onClick={handleRemovePlayer}
-          className="absolute -top-1 -right-1 bg-[#ED2939] text-white rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center opacity-0 hover:opacity-100 z-20"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-2 w-2 sm:h-3 sm:w-3"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
       </div>
       
-      {/* Player details on click */}
+      {/* Player details on click with remove button */}
       {showDetails && (
-        <div className="absolute z-30 -bottom-12 left-1/2 transform -translate-x-1/2 bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap shadow-md">
-          <div className="font-bold">{player.name}</div>
-          <div className="text-[10px] opacity-80">{player.position} • {player.club}</div>
+        <div className="absolute z-30 -bottom-12 left-1/2 transform -translate-x-1/2 bg-[#002654] text-white text-xs py-1 px-2 rounded-md whitespace-nowrap shadow-md flex items-center gap-2">
+          <div>
+            <div className="font-bold">{player.name}</div>
+            <div className="text-[10px] opacity-80">
+              {player.position} • {player.club} • {player.rating}★
+            </div>
+          </div>
+          
+          {/* Remove player button moved here */}
+          <button 
+            onClick={handleRemovePlayer}
+            className="bg-[#ED2939] text-white rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center hover:brightness-90 transition-all"
+            aria-label="Retirer le joueur"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-2 w-2 sm:h-3 sm:w-3"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
         </div>
       )}
     </div>
